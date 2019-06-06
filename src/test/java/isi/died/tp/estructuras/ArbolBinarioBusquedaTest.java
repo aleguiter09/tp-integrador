@@ -17,7 +17,6 @@ public class ArbolBinarioBusquedaTest {
 		arbol1.agregar(2);
 		arbol1.agregar(7);
 		arbol1.agregar(4);
-	
 	}
 	@Test
 	public void testContiene() {

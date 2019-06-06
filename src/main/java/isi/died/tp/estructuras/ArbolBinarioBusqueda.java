@@ -1,7 +1,9 @@
 package isi.died.tp.estructuras;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+import isi.died.tp.dominio.Insumo;
+import isi.died.tp.dominio.Medida;
 
 public class ArbolBinarioBusqueda<E extends Comparable<E>> extends Arbol<E> {
 
@@ -141,5 +143,39 @@ public class ArbolBinarioBusqueda<E extends Comparable<E>> extends Arbol<E> {
 		else
 			return false;
 	}
-
+	
+	public ArrayList<E> rango(int inicial, int fin) {
+		ArrayList<E> resultado = new ArrayList<E>();
+		Insumo i = new Insumo(0,inicial,null,Medida.KILO,false,0,0);
+		Insumo f = new Insumo(0,fin,null,Medida.KILO,false,0,0);
+		ArrayList<E> aux = new ArrayList<E>();
+		aux = this.rangoAux(i, f, resultado);
+		Set<E> hashSet = new HashSet<E>(aux);
+		aux.clear();
+		aux.addAll(hashSet);
+		Collections.sort(aux);
+		return aux;
+	}
+	
+	public ArrayList<E> rangoAux(Insumo inicial, Insumo fin, ArrayList<E> resultado) {
+		if(this.izquierdo().esVacio() && this.derecho().esVacio()) {
+		if(((Insumo)this.valor()).compareTo(inicial) >= 0 && ((Insumo)this.valor()).compareTo(fin) <= 0)
+			resultado.add(this.valor());
+		return resultado;
+		}
+		
+		else {
+			if(((Insumo)this.valor()).compareTo(inicial) >= 0 && ((Insumo)this.valor()).compareTo(fin) <= 0) {
+			if(!resultado.contains(this.valor()))
+			resultado.add(this.valor());
+			}
+			if(!this.izquierdo().esVacio())
+				resultado.addAll(this.izquierdo().rangoAux(inicial, fin, resultado));
+			if(!this.derecho().esVacio())
+				resultado.addAll(this.derecho().rangoAux(inicial, fin, resultado));
+			return resultado;
+		}	
+}
+		
+		
 }

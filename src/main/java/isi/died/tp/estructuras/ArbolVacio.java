@@ -1,7 +1,10 @@
 package isi.died.tp.estructuras;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import isi.died.tp.dominio.Insumo;
 
 public class ArbolVacio<E extends Comparable<E>> extends Arbol<E> {
 
@@ -76,6 +79,11 @@ public class ArbolVacio<E extends Comparable<E>> extends Arbol<E> {
 	@Override
 	public boolean esLleno() {
 		return false;
+	}
+
+	@Override
+	public Collection<? extends E> rangoAux(Insumo inicial, Insumo fin, ArrayList<E> resultado) {
+		return null;
 	}
 
 

@@ -1,6 +1,8 @@
 package isi.died.tp.estructuras;
 
-import java.util.List;
+import java.util.*;
+
+import isi.died.tp.dominio.Insumo;
 
 public abstract class Arbol<E extends Comparable<E>> {
 
@@ -34,6 +36,8 @@ public abstract class Arbol<E extends Comparable<E>> {
 	public abstract boolean esCompleto();
 
 	public abstract boolean esLleno();
+
+	public abstract Collection<? extends E> rangoAux(Insumo inicial, Insumo fin, ArrayList<E> resultado);
 
 	
 }
