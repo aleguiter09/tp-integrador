@@ -6,12 +6,10 @@ import org.junit.*;
 
 public class ArbolBinarioBusquedaTest {
 	private ArbolBinarioBusqueda<Integer> arbol1;
-	private ArbolBinarioBusqueda<Integer> arbol2; 
 	
 	@Before
 	public void preTest() {
 		arbol1 = new ArbolBinarioBusqueda<Integer>(6);
-		arbol2 = new ArbolBinarioBusqueda<Integer>(5); 
 		arbol1.agregar(5);
 		arbol1.agregar(9);
 		arbol1.agregar(2);

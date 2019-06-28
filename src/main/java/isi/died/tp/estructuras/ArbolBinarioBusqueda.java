@@ -120,7 +120,7 @@ public class ArbolBinarioBusqueda<E extends Comparable<E>> extends Arbol<E> {
 
 	@Override
 	public boolean esCompleto() {
-		// TODO LISTO 1.d
+	
 		if(this.esLleno())
 			return true;
 		

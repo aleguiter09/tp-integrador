@@ -3,7 +3,6 @@ package isi.died.tp.estructuras;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import org.junit.*;
 
@@ -23,9 +22,6 @@ public class TestRangoABB {
 		i5 = new Insumo(0,5,null,Medida.KILO,false,0,0);
 		i6 = new Insumo(0,6,null,Medida.KILO,false,0,0);
 		
-		inicial = new Insumo(0,2,null,Medida.KILO,false,0,0);
-		fin = new Insumo(0,4,null,Medida.KILO,false,0,0);
-
 		arbol1 = new ArbolBinarioBusqueda<Insumo>(i1);
 		arbol1.agregar(i2);
 		arbol1.agregar(i3);
