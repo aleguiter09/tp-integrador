@@ -64,6 +64,7 @@ public class App {
 		System.out.println(pl.costoTotal());
 		System.out.println(pl.stockEntre(32, 41).toString());
 		System.out.println(pl.necesitaInsumo(i4));
+	
 		
 	}
 

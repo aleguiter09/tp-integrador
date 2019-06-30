@@ -47,4 +47,12 @@ public class Planta {
 			return false;
 		else return true;
 	}
+
+	public Integer cantNecesaria(Insumo i) {
+		Stock st = new Stock();
+		st = stock.stream().filter((s)->s.getInsumo().equals(i)).collect(Collectors.toList()).get(0);
+		if(st.getCantidad() > st.getPuntoPedido())
+			return 0;
+		else return st.getPuntoPedido()-st.getCantidad();
+	}
 }

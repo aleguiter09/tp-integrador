@@ -27,6 +27,10 @@ public class Grafo<T> {
 		this.aristas = new ArrayList<Arista<T>>();
 		this.vertices = new ArrayList<Vertice<T>>();
 	}
+	
+	public List<Vertice<T>> vertices() {
+		return this.vertices;
+	}
 
 	public void addNodo(T nodo){
 		this.addNodo(new Vertice<T>(nodo));
