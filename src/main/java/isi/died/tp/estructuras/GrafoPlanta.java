@@ -82,5 +82,13 @@ public void imprimirDistanciaAdyacentes(Planta inicial) {
 	 }
 	 return null;
  }
+ 
+ public void conectar(Planta n1,Planta n2, float dur, float pesoC, float dist){
+		this.conectar(getNodo(n1), getNodo(n2), 1.0, dur, pesoC, dist);
+	}
+ 
+ public void conectar(Vertice<Planta> nodo1,Vertice<Planta> nodo2,Number valor,float dur,float pesoC, float dist){
+		this.aristas.add(new Arista<Planta>(nodo1,nodo2,valor,dist,dur,pesoC));
+	}
 
 }

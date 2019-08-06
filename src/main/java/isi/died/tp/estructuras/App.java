@@ -1,8 +1,8 @@
 package isi.died.tp.estructuras;
 
-import java.util.*;
+/*import java.util.*;
 
-import isi.died.tp.dominio.*;
+import isi.died.tp.dominio.*;*/
 
 public class App {
 
@@ -30,12 +30,16 @@ public class App {
 			System.out.println(i.getStock());
 		}*/
 		
-		Insumo i1 = new Insumo(0,1,null,Medida.KILO,false,25,0);
+		/*Insumo i1 = new Insumo(0,1,null,Medida.KILO,false,25,0);
 		Insumo i2 = new Insumo(0,2,null,Medida.KILO,false,13,0);
 		Insumo i3 = new Insumo(0,3,null,Medida.KILO,false,2,0);
 		Insumo i4 = new Insumo(0,4,null,Medida.KILO,false,1,0);
+		ArbolBinarioBusqueda<Insumo> aux = new ArbolBinarioBusqueda<Insumo>(i1);
+		aux.agregar(i2);
+		aux.agregar(i3);
+		aux.agregar(i4);*/
 		
-		Stock s1 = new Stock();
+		/*Stock s1 = new Stock();
 		s1.setCantidad(13);
 		s1.setInsumo(i1);
 		s1.setPuntoPedido(12);
@@ -63,7 +67,9 @@ public class App {
 		
 		System.out.println(pl.costoTotal());
 		System.out.println(pl.stockEntre(32, 41).toString());
-		System.out.println(pl.necesitaInsumo(i4));
+		System.out.println(pl.necesitaInsumo(i4));*/
+		
+		//System.out.println(aux.mayores(i3).toString());
 	
 		
 	}

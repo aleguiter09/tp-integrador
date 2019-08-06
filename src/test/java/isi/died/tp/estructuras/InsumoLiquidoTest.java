@@ -1,12 +1,12 @@
 package isi.died.tp.estructuras;
 
-import static org.junit.Assert.*;
+/*import static org.junit.Assert.*;
 import org.junit.Test;
 
 import isi.died.tp.dominio.InsumoLiquido;
-import isi.died.tp.dominio.Medida;
+import isi.died.tp.dominio.Medida;*/
 
-public class InsumoLiquidoTest {
+/*public class InsumoLiquidoTest {
 	InsumoLiquido i = new InsumoLiquido(3666,1000,"Liquido",Medida.LITRO,false,0,1000,1141);	
 	
 	@Test
@@ -19,4 +19,4 @@ public class InsumoLiquidoTest {
 	
 	
 
-}
+}*/

@@ -7,6 +7,14 @@ public class Stock {
 	private Integer puntoPedido;
 	private Insumo insumo;
 	
+	public Stock(int id, int cantidad, int puntoPedido, Insumo insumo) {
+		this.cantidad = cantidad;
+		this.id = id;
+		this.puntoPedido = puntoPedido;
+		this.insumo = insumo;
+		insumo.agregarStock(this);
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -30,7 +38,7 @@ public class Stock {
 	}
 	public void setInsumo(Insumo insumo) {
 		this.insumo = insumo;
+		insumo.agregarStock(this);
 	}
-	
 	
 }

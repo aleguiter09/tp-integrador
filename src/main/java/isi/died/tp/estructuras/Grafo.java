@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 
 
 public class Grafo<T> {
-	private List<Arista<T>> aristas;
-	private List<Vertice<T>> vertices;
+	protected List<Arista<T>> aristas;
+	protected List<Vertice<T>> vertices;
 
 	public Grafo(){
 		this.aristas = new ArrayList<Arista<T>>();
@@ -54,6 +54,14 @@ public class Grafo<T> {
 	
 	public Vertice<T> getNodo(T valor){
 		return this.vertices.get(this.vertices.indexOf(new Vertice<T>(valor)));
+	}
+	   
+    public List<Arista<T>> getAristas() {
+		return aristas;
+	}
+
+	public void setAristas(List<Arista<T>> aristas) {
+		this.aristas = aristas;
 	}
 
 	public List<T> getAdyacentes(T valor){ 
@@ -172,7 +180,7 @@ public class Grafo<T> {
 		return resultado;
  	}
         
-    private boolean esAdyacente(Vertice<T> v1,Vertice<T> v2){
+    public boolean esAdyacente(Vertice<T> v1,Vertice<T> v2){
     	List<Vertice<T>> ady = this.getAdyacentes(v1);
         for(Vertice<T> unAdy : ady){
         	if(unAdy.equals(v2)) return true;
@@ -272,8 +280,9 @@ public class Grafo<T> {
     	return this.buscarArista(new Vertice<T>(v1), new Vertice<T>(v2));
     }
 
-   
-    protected Arista<T> buscarArista(Vertice<T> v1, Vertice<T> v2){
+
+
+	protected Arista<T> buscarArista(Vertice<T> v1, Vertice<T> v2){
     	for(Arista<T> unaArista : this.aristas) {
     		
     		if(unaArista.getInicio().equals(v1) && unaArista.getFin().equals(v2)) return unaArista;

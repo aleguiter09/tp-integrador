@@ -85,6 +85,16 @@ public class ArbolVacio<E extends Comparable<E>> extends Arbol<E> {
 	public Collection<? extends E> rangoAux(Insumo inicial, Insumo fin, ArrayList<E> resultado) {
 		return null;
 	}
+	
+	public List<E> mayores(E n) {
+		List<E> aux = new ArrayList<E>();
+		return aux;
+	}
+
+	@Override
+	protected E obtener(E unValor) {
+		return null;
+	}
 
 
 

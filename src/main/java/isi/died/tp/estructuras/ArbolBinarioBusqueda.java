@@ -1,9 +1,7 @@
 package isi.died.tp.estructuras;
 
 import java.util.*;
-
-import isi.died.tp.dominio.Insumo;
-import isi.died.tp.dominio.Medida;
+import isi.died.tp.dominio.*;
 
 public class ArbolBinarioBusqueda<E extends Comparable<E>> extends Arbol<E> {
 
@@ -29,35 +27,43 @@ public class ArbolBinarioBusqueda<E extends Comparable<E>> extends Arbol<E> {
 	}
 	
 	@Override
-	public List<E> preOrden() {
-		List<E> lista = new ArrayList<E>();
+	public ArrayList<E> preOrden() {
+		ArrayList<E> lista = new ArrayList<E>();
 		lista.add(this.valor);
 		lista.addAll(this.izquierdo.preOrden());
 		lista.addAll(this.derecho.preOrden());
 		return lista;
 	}
 	@Override
-	public List<E> inOrden() {
-		List<E> lista = new ArrayList<E>();
+	public ArrayList<E> inOrden() {
+		ArrayList<E> lista = new ArrayList<E>();
 		lista.addAll(this.izquierdo.preOrden());
 		lista.add(this.valor);
 		lista.addAll(this.derecho.preOrden());
 		return lista;
 	}
 	@Override
-	public List<E> posOrden() {
-		List<E> lista = new ArrayList<E>();
+	public ArrayList<E> posOrden() {
+		ArrayList<E> lista = new ArrayList<E>();
 		lista.addAll(this.izquierdo.preOrden());
 		lista.addAll(this.derecho.preOrden());
 		lista.add(this.valor);
 		return lista;
-
 	}
 	@Override
 	public boolean esVacio() {
 		return false;
 	}
         
+	public E obtener(E unValor) {
+		if(unValor.equals(this.valor))
+			return this.valor;
+		else
+			if(this.valor().compareTo(unValor) > 0) {
+				return this.izquierdo().obtener(unValor);
+			} else return this.derecho().obtener(unValor); 
+	}
+	
 	@Override
 	public E valor() {
 		return this.valor;
@@ -144,7 +150,7 @@ public class ArbolBinarioBusqueda<E extends Comparable<E>> extends Arbol<E> {
 			return false;
 	}
 	
-	public ArrayList<E> rango(int inicial, int fin) {
+	/*public ArrayList<E> rango(Stock inicial, Stock fin) {
 		ArrayList<E> resultado = new ArrayList<E>();
 		Insumo i = new Insumo(0,inicial,null,Medida.KILO,false,0,0);
 		Insumo f = new Insumo(0,fin,null,Medida.KILO,false,0,0);
@@ -155,7 +161,7 @@ public class ArbolBinarioBusqueda<E extends Comparable<E>> extends Arbol<E> {
 		aux.addAll(hashSet);
 		Collections.sort(aux);
 		return aux;
-	}
+	}*/
 	
 	public ArrayList<E> rangoAux(Insumo inicial, Insumo fin, ArrayList<E> resultado) {
 		if(this.izquierdo().esVacio() && this.derecho().esVacio()) {
@@ -174,8 +180,24 @@ public class ArbolBinarioBusqueda<E extends Comparable<E>> extends Arbol<E> {
 			if(!this.derecho().esVacio())
 				resultado.addAll(this.derecho().rangoAux(inicial, fin, resultado));
 			return resultado;
-		}	
+		}
 }
 		
-		
+	public List<E> mayores(E n) {
+		List<E> resultado = new ArrayList<E>();
+		if(this.valor().compareTo(n) >= 0) {
+			resultado.add(this.valor());
+			resultado.addAll(this.izquierdo().mayores(n));
+			return resultado;
+		}
+		else if(this.valor().compareTo(n) > 0) {
+			resultado.addAll(this.izquierdo().mayores(n));
+			return resultado;
+		}
+		else if(this.valor().compareTo(n) < 0) {
+			resultado.addAll(this.derecho().mayores(n));
+			return resultado;
+		}
+		else return resultado;
+	}
 }

@@ -7,21 +7,17 @@ public class InsumoLiquido extends Insumo {
 		super();
 		this.densidad = 0;
 	}
-
-	public InsumoLiquido(int id, int stock, String descripcion, Medida unidadDeMedida, boolean esRefrigerado, float costo, float peso, float densidad) {
-		super(id, stock, descripcion, unidadDeMedida, esRefrigerado, costo, peso);
+	public InsumoLiquido(int id, String nombre, String descripcion, Medida unidadDeMedida, boolean esRefrigerado, float costo, float peso, float densidad) {
+		super (id, nombre, descripcion, unidadDeMedida, esRefrigerado, costo, peso);
 		this.densidad = densidad;
 	}
-	
 	public float getDensidad() {
 		return densidad;
 	}
-
 	public void setDensidad(float densidad) {
 		this.densidad = densidad;
 	}
-	
 	public float calcularPeso() {
-		return peso*stock*densidad;
+		return peso*densidad;
 	}
 }

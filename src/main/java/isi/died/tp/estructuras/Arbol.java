@@ -39,5 +39,8 @@ public abstract class Arbol<E extends Comparable<E>> {
 
 	public abstract Collection<? extends E> rangoAux(Insumo inicial, Insumo fin, ArrayList<E> resultado);
 
+	public abstract List<E> mayores(E n);
+
+	protected abstract E obtener(E unValor);
 	
 }

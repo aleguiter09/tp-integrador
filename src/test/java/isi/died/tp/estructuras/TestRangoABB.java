@@ -1,4 +1,4 @@
-package isi.died.tp.estructuras;
+/*package isi.died.tp.estructuras;
 
 import static org.junit.Assert.*;
 
@@ -40,4 +40,4 @@ public class TestRangoABB {
 		assertEquals(esperado,resultado);
 	}
 
-}
+}*/
