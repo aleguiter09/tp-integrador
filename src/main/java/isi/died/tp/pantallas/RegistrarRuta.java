@@ -8,18 +8,20 @@ import isi.died.tp.dominio.Planta;
 import java.awt.Font;
 import java.awt.Button;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 
 public class RegistrarRuta extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private static final int ancho = 650, alto = 571;
+	private static final int ancho = 900, alto = 571;
 	private JTextField distancia;
 	private JTextField duracion;
 	private JTextField peso;
 	private JTextField inicio;
 	private JTextField fin;
 
-	public RegistrarRuta(Principal principal, JPanel aux) {
+	public RegistrarRuta(Principal principal) {
 		setBounds(350, 0, ancho, alto);
 		setBackground(new Color(139, 69, 19));
 		setLayout(null);
@@ -43,6 +45,17 @@ public class RegistrarRuta extends JPanel {
 		add(distancia);
 		distancia.setColumns(10);
 		
+		distancia.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char validar=e.getKeyChar();
+				if(Character.isLetter(validar)) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
+		
 		JLabel lblDuracinDelViaje = new JLabel("Duración del viaje (Minutos) :  ");
 		lblDuracinDelViaje.setForeground(new Color(255, 255, 255));
 		lblDuracinDelViaje.setFont(new Font("Dialog", Font.BOLD, 12));
@@ -53,6 +66,16 @@ public class RegistrarRuta extends JPanel {
 		duracion.setBounds(339, 203, 86, 25);
 		add(duracion);
 		duracion.setColumns(10);
+		duracion.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char validar=e.getKeyChar();
+				if(Character.isLetter(validar)) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		
 		JLabel lblPesoMaxAceptado = new JLabel("Peso max. aceptado por el camión (Toneladas) :");
 		lblPesoMaxAceptado.setForeground(new Color(255, 255, 255));
@@ -64,6 +87,16 @@ public class RegistrarRuta extends JPanel {
 		peso.setBounds(339, 275, 86, 25);
 		add(peso);
 		peso.setColumns(10);
+		peso.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char validar=e.getKeyChar();
+				if(Character.isLetter(validar)) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		
 		
 		JLabel lblIdPlantaOrigen = new JLabel("ID planta origen :");
@@ -82,11 +115,31 @@ public class RegistrarRuta extends JPanel {
 		inicio.setBounds(339, 350, 86, 25);
 		add(inicio);
 		inicio.setColumns(10);
+		inicio.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char validar=e.getKeyChar();
+				if(Character.isLetter(validar)) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		
 		fin = new JTextField();
 		fin.setBounds(339, 425, 86, 25);
 		add(fin);
 		fin.setColumns(10);
+		fin.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char validar=e.getKeyChar();
+				if(Character.isLetter(validar)) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		
 		Button cancelar = new Button("Cancelar");
 		cancelar.addActionListener(new ActionListener() {
@@ -94,9 +147,7 @@ public class RegistrarRuta extends JPanel {
 				int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea cancelar?","ALERTA!",JOptionPane.YES_NO_OPTION);
 				if(resp != 1) {
 					setVisible(false);
-					aux.setVisible(true);
 				}
-			
 			}
 		});
 		cancelar.setBounds(525, 519, 70, 22);
@@ -122,7 +173,12 @@ public class RegistrarRuta extends JPanel {
 							fn = principal.grafo.vertices().get(i).getValor();
 					}
 					principal.grafo.conectar(in,fn,dist,durac,pes);
-					JOptionPane.showMessageDialog(null, "¡Ruta registrada con éxito! \nID Insumo: \nInicio en: Planta "+in.getNombre()+"\nFin en: Planta "+fn.getNombre());
+					JOptionPane.showMessageDialog(null, "¡Ruta registrada con éxito! \nInicio en: Planta "+in.getNombre()+"\nFin en: Planta "+fn.getNombre());
+					distancia.setText(null);
+					duracion.setText(null);
+					peso.setText(null);
+					inicio.setText(null);
+					fin.setText(null);
 				}
 			}
 		});

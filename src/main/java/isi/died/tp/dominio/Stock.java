@@ -15,6 +15,12 @@ public class Stock {
 		insumo.agregarStock(this);
 	}
 	
+	public Stock() {}
+	
+	public void agregarInsumo(Insumo i) {
+		this.insumo = i;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

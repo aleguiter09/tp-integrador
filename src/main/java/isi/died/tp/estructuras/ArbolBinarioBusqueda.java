@@ -150,10 +150,12 @@ public class ArbolBinarioBusqueda<E extends Comparable<E>> extends Arbol<E> {
 			return false;
 	}
 	
-	/*public ArrayList<E> rango(Stock inicial, Stock fin) {
+	public ArrayList<E> rango(Stock inicial, Stock fin) {
 		ArrayList<E> resultado = new ArrayList<E>();
-		Insumo i = new Insumo(0,inicial,null,Medida.KILO,false,0,0);
-		Insumo f = new Insumo(0,fin,null,Medida.KILO,false,0,0);
+		Insumo i = new Insumo();
+		i.agregarStock(inicial);
+		Insumo f = new Insumo();
+		f.agregarStock(fin);
 		ArrayList<E> aux = new ArrayList<E>();
 		aux = this.rangoAux(i, f, resultado);
 		Set<E> hashSet = new HashSet<E>(aux);
@@ -161,17 +163,17 @@ public class ArbolBinarioBusqueda<E extends Comparable<E>> extends Arbol<E> {
 		aux.addAll(hashSet);
 		Collections.sort(aux);
 		return aux;
-	}*/
+	}
 	
 	public ArrayList<E> rangoAux(Insumo inicial, Insumo fin, ArrayList<E> resultado) {
 		if(this.izquierdo().esVacio() && this.derecho().esVacio()) {
-		if(((Insumo)this.valor()).compareTo(inicial) >= 0 && ((Insumo)this.valor()).compareTo(fin) <= 0)
+		if(((Insumo)this.valor()).calcularTotal() - inicial.calcularTotal() >= 0 && ((Insumo)this.valor()).calcularTotal() - fin.calcularTotal() <= 0)
 			resultado.add(this.valor());
 		return resultado;
 		}
 		
 		else {
-			if(((Insumo)this.valor()).compareTo(inicial) >= 0 && ((Insumo)this.valor()).compareTo(fin) <= 0) {
+			if(((Insumo)this.valor()).calcularTotal() - inicial.calcularTotal() >= 0 && ((Insumo)this.valor()).calcularTotal() - fin.calcularTotal() <= 0) {
 			if(!resultado.contains(this.valor()))
 			resultado.add(this.valor());
 			}

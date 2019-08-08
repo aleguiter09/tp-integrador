@@ -80,7 +80,7 @@ public class Insumo implements Comparable<Insumo> {
 	
 	@Override
 	public int compareTo(Insumo i) {
-		return this.calcularTotal() - i.calcularTotal();
+		return this.id- i.getId();
 	}
 	
 	public boolean equals(Object i) {

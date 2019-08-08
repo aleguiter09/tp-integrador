@@ -10,9 +10,8 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class Principal {
-	private int ancho = 1000, alto = 610; 
+	private int ancho = 1250, alto = 610; 
 	private JFrame frame;
-	private JPanel aux;
 	private RegistroInsumo registroI;
 	private RegistroPlanta registroP;
 	private RegistroCamion registroC;
@@ -25,7 +24,8 @@ public class Principal {
 	public GrafoPlanta grafo;
 	public ArbolBinarioBusqueda<Insumo> arbol;
 	public ArrayList<Camion> camiones;
-	public ArrayList<Planta> listaPlantas ;
+	
+	private Planta acopioPuerto, acopioFinal;
 
 	public static void main(String[] args) {
 		new Principal();
@@ -34,17 +34,21 @@ public class Principal {
 	public Principal() {
 		//Instanciamos estructuras
 		grafo = new GrafoPlanta();
-		listaPlantas = new  ArrayList<Planta>();
+		acopioPuerto = new Planta(-1, "Acopio Puerto");
+		acopioFinal = new Planta(-2, "Acopio Final");
+		grafo.addNodo(acopioPuerto);
+		grafo.addNodo(acopioFinal);
+		
 		Insumo inicio = new Insumo(-1,"aux",null,null,false,0,0);
 		arbol = new ArbolBinarioBusqueda<Insumo>(inicio);
 		camiones = new ArrayList<Camion>();
+		//Instanciamos prueba
+		instanciarPruebas();
 		//Instancio pantallas
 		iniciarFrame();
 		iniciarPanelPrincipal();
 		iniciarPantallas();
 		frame.setVisible(true);
-		//Instanciamos prueba
-		instanciarPruebas();
 	}
 	
 	public void iniciarFrame() {
@@ -54,6 +58,7 @@ public class Principal {
 		frame.setTitle("Gestion de plantas");
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(null);
+		frame.getContentPane().setBackground(new Color(139, 69, 19));
 	}
 	
 	public void iniciarPanelPrincipal() {
@@ -180,20 +185,15 @@ public class Principal {
 	}
 
 	public void iniciarPantallas() {
-		aux = new JPanel();
-		aux.setBackground(new Color(139, 69, 19));
-		aux.setBounds(350, 0, 650, 571);
-		
-		registroI = new RegistroInsumo(this, aux);
-		registroP = new RegistroPlanta(this, aux);
-		registroC = new RegistroCamion(this, aux);
-		registroR = new RegistrarRuta(this, aux);
-		buscarI = new BuscarInsumos(this, aux);
-		buscarP = new BuscarPlantas(this, aux);
-		verC = new VerCamiones(this, aux);
+		registroI = new RegistroInsumo(this);
+		registroP = new RegistroPlanta(this);
+		registroC = new RegistroCamion(this);
+		registroR = new RegistrarRuta(this);
+		buscarI = new BuscarInsumos(this);
+		buscarP = new BuscarPlantas(this);
+		verC = new VerCamiones(this);
 		verR = new VerRutas(this);
 		
-		frame.getContentPane().add(aux);
 		frame.getContentPane().add(registroI);
 		frame.getContentPane().add(registroC);
 		frame.getContentPane().add(registroP);
@@ -204,11 +204,9 @@ public class Principal {
 		frame.getContentPane().add(verC);
 		
 		esconderPantallas();
-		aux.setVisible(true);
 	}
 	
 	public void esconderPantallas() {
-		aux.setVisible(false);
 		registroI.setVisible(false);
 		registroC.setVisible(false);
 		registroP.setVisible(false);
@@ -375,5 +373,16 @@ public class Principal {
 		p1.getStock().add(s30);
 		p0.getStock().add(s31);
 		p6.getStock().add(s32);
+		
+	
+		grafo.conectar(acopioPuerto, p0, 0, 0, 0);
+		grafo.conectar(p0, p1, 600, 1, 2000);
+		grafo.conectar(p1, p2, 1000, (float)0.5, 1000);
+		grafo.conectar(p2, p3, 800, (float)0.2, 1500);
+		grafo.conectar(p3, p4, 400, (float)1.1, 2500);
+		grafo.conectar(p4, p5, 1500, (float)0.3, 900);
+		grafo.conectar(p5, p6, 900, (float)0.4, 800);
+		grafo.conectar(p6, acopioFinal, 0, 0, 0);
+		
 	}
 }

@@ -37,18 +37,27 @@ public class Planta {
 	public List<Insumo> stockEntre(Integer v1, Integer v2) {
 		return stock.stream().filter((s)->s.getCantidad() <= v2 && s.getCantidad() >= v1).map((s)->s.getInsumo()).collect(Collectors.toList());
 	}
+
 	public Boolean necesitaInsumo(Insumo i) {
-		Stock st = new Stock(1,1,1,i);  //VER ESTO
-		st = stock.stream().filter((s)->s.getInsumo().equals(i)).collect(Collectors.toList()).get(0);
-		if(st.getCantidad() > st.getPuntoPedido())
-			return false;
-		else return true;
+		Stock st = new Stock();
+		st.agregarInsumo(i);
+		if(!stock.stream().filter((s)->s.getInsumo().equals(i)).collect(Collectors.toList()).isEmpty()) {
+			st = stock.stream().filter((s)->s.getInsumo().equals(i)).collect(Collectors.toList()).get(0);
+			if(st.getCantidad() > st.getPuntoPedido())
+				return false;
+			else return true;
+		}
+		else return false;
 	}
+	
 	public Integer cantNecesaria(Insumo i) {
-		Stock st = new Stock(1,1,1,i);  //VER ESTO
-		st = stock.stream().filter((s)->s.getInsumo().equals(i)).collect(Collectors.toList()).get(0);
-		if(st.getCantidad() > st.getPuntoPedido())
-			return 0;
-		else return st.getPuntoPedido()-st.getCantidad();
+		Stock st = new Stock();  
+		if(!stock.stream().filter((s)->s.getInsumo().equals(i)).collect(Collectors.toList()).isEmpty()) {
+			st = stock.stream().filter((s)->s.getInsumo().equals(i)).collect(Collectors.toList()).get(0);
+			if(st.getCantidad() > st.getPuntoPedido())
+				return 0;
+			else return st.getPuntoPedido()-st.getCantidad();
+		}
+		else return 0;
 	}
 }

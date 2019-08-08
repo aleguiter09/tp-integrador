@@ -13,7 +13,7 @@ import isi.died.tp.dominio.*;
 public class RegistroInsumo extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private static final int ancho = 650, alto = 571;
+	private static final int ancho = 900, alto = 571;
 	
 	private JTextField descripcion;
 	private JTextField costo;
@@ -23,7 +23,7 @@ public class RegistroInsumo extends JPanel {
 	
 	private int idGeneral = 0;
 	
-	public RegistroInsumo(Principal principal, JPanel aux) {
+	public RegistroInsumo(Principal principal) {
 		setBounds(350, 0, ancho, alto);
 		setBackground(new Color(139, 69, 19));
 		setLayout(null);
@@ -185,7 +185,6 @@ public class RegistroInsumo extends JPanel {
 				int resp = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea cancelar?","ALERTA!",JOptionPane.YES_NO_OPTION);
 				if(resp != 1) {
 					setVisible(false);
-					aux.setVisible(true);
 				}
 			}
 		});

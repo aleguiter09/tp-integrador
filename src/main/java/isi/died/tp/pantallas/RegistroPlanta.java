@@ -12,12 +12,12 @@ import java.awt.event.ActionEvent;
 public class RegistroPlanta extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private static final int ancho = 650, alto = 571;
+	private static final int ancho = 900, alto = 571;
 	private int id_general=0;
 	
 	private JTextField nombre;
 	
-	public RegistroPlanta(Principal principal, JPanel aux) {
+	public RegistroPlanta(Principal principal) {
 		setBounds(350, 0, ancho, alto);
 		setBackground(new Color(139, 69, 19));
 		setLayout(null);
@@ -44,7 +44,6 @@ public class RegistroPlanta extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(!nombre.getText().isEmpty()) {
 					Planta p = new Planta(id_general,nombre.getText());
-					principal.listaPlantas.add(p);
 					principal.grafo.addNodo(p); 
 					JOptionPane.showMessageDialog(null, "¡Planta registrada con éxito!\nID Planta: "+p.getId());
 					id_general++;
@@ -63,7 +62,6 @@ public class RegistroPlanta extends JPanel {
 				int resp = JOptionPane.showConfirmDialog(null, "Â¿Esta seguro que desea cancelar?","ALERTA!",JOptionPane.YES_NO_OPTION);
 				if(resp != 1) {
 					setVisible(false);
-					aux.setVisible(true);
 				}
 			}
 		});

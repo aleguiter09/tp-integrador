@@ -14,18 +14,20 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JTextField;
 
 public class VerCamiones extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
-	private static final int  ancho=650, alto=571;
+	private static final int  ancho=900, alto=571;
 	
 	private JTable table;
 	private Object[][] valores;
 	private String[] columnas;
 	private DefaultTableModel modelo;
+	private JTextField valor;
 	
-	public VerCamiones(Principal principal, JPanel aux) {
+	public VerCamiones(Principal principal) {
 		setBounds(350, 0, ancho, alto);
 		setBackground(new Color(139, 69, 19));
 		setLayout(null);
@@ -60,27 +62,37 @@ public class VerCamiones extends JPanel {
 		};
 		
 		modelo.setDataVector(valores,columnas);
+		
+		JLabel lblValorAModificar = new JLabel("Valor a modificar:");
+		lblValorAModificar.setForeground(Color.WHITE);
+		lblValorAModificar.setFont(new Font("Dialog", Font.BOLD, 12));
+		lblValorAModificar.setBounds(30, 465, 115, 25);
+		add(lblValorAModificar);
 	
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 76, 604, 373);
+		scrollPane.setBounds(12, 76, 604, 364);
 		add(scrollPane);
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		table.setModel(modelo);
 		
-		Button button = new Button("Cerrar");
-		button.addActionListener(new ActionListener() {
+		Button cerrar = new Button("Cerrar");
+		cerrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int resp = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea cancelar?","ALERTA!",JOptionPane.YES_NO_OPTION);
 				if(resp != 1) {
 					setVisible(false);
-					aux.setVisible(true);
 				}
 			}
 		});
-		button.setBounds(526, 505, 70, 22);
-		add(button);
+		
+		valor = new JTextField();
+		valor.setBounds(196, 465, 86, 25);
+		add(valor);
+		valor.setColumns(10);
+		cerrar.setBounds(526, 505, 70, 22);
+		add(cerrar);
 		
 		Button refresh = new Button("Refrescar");
 		refresh.addActionListener(new ActionListener() {
@@ -106,10 +118,48 @@ public class VerCamiones extends JPanel {
 		scrollPane.setViewportView(table);
 		table.setModel(modelo);
 		
-		table.getColumnModel().getColumn(0).setPreferredWidth(100);
-		table.getColumnModel().getColumn(1).setPreferredWidth(100);
-		table.getColumnModel().getColumn(2).setPreferredWidth(100);
-		table.getColumnModel().getColumn(3).setPreferredWidth(100);
+		Button eliminar = new Button("Eliminar");
+		eliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				principal.camiones.remove(table.getSelectedRow());
+			}
+		});
+		eliminar.setBounds(312, 505, 70, 22);
+		add(eliminar);
 		
+		Button modificar = new Button("Modificar");
+		modificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(table.getSelectedColumn() == 1) {
+					principal.camiones.get(table.getSelectedRow()).setMarca(valor.getText());
+				}
+				else if(table.getSelectedColumn() == 2) {
+					principal.camiones.get(table.getSelectedRow()).setModelo(valor.getText());
+				}
+				else if(table.getSelectedColumn() == 3) {
+					principal.camiones.get(table.getSelectedRow()).setDominio(valor.getText());
+				}
+				else if(table.getSelectedColumn() == 4) {
+					int aux = Integer.valueOf(valor.getText().trim()).intValue();
+					principal.camiones.get(table.getSelectedRow()).setAnio(aux);		
+				}
+				else if(table.getSelectedColumn() == 5) {
+					float cos = Float.valueOf(valor.getText().trim()).floatValue();
+					principal.camiones.get(table.getSelectedRow()).setCostoPorKM(cos);
+				}
+				else if(table.getSelectedColumn() == 6) {
+					float cap = Float.valueOf(valor.getText().trim()).floatValue();
+					principal.camiones.get(table.getSelectedRow()).setCapacidad(cap);
+				}
+				else if(table.getSelectedColumn() == 7) {
+					principal.camiones.get(table.getSelectedRow()).setAptoLiquidos(!principal.camiones.get(table.getSelectedRow()).isAptoLiquidos());
+				}
+				else {
+					System.out.println("Aca va el error");
+				}
+			}
+		});
+		modificar.setBounds(212, 505, 70, 22);
+		add(modificar);
 	}
 }

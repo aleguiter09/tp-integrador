@@ -7,6 +7,7 @@ public class VerticeGrafo {
 	private int x,y;
 	private Vertice<Planta> vertice;
 	private boolean seleccionado;
+	private boolean necesitaInsumo = false;
 	
 	public boolean getSeleccionado() {
 		return seleccionado;
@@ -38,6 +39,14 @@ public class VerticeGrafo {
 	
 	public void setVertice(Vertice<Planta> p) {
 		this.vertice = p;
+	}
+	
+	public boolean isNecesitaInsumo() {
+		return necesitaInsumo;
+	}
+
+	public void setNecesitaInsumo(boolean necesitaInsumo) {
+		this.necesitaInsumo = necesitaInsumo;
 	}
 
 	public VerticeGrafo() {
