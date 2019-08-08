@@ -1,11 +1,20 @@
 package isi.died.tp.estructuras;
 
-public class Vertice<T> {
+public class Vertice<T> implements Comparable<Vertice<T>> {
 
 	private T valor;
+	private int PageRank;
 	
-	public Vertice(){	}
+	public Vertice(){}
 	 
+	public int getPageRank() {
+		return this.PageRank;
+	}
+	
+	public void setPageRank(int pr) {
+		this.PageRank = pr;
+	}
+	
 	public Vertice(T v){
 		this.valor = v;
 	}
@@ -48,6 +57,11 @@ public class Vertice<T> {
 	@Override
 	public String toString() {
 		return valor.toString();
+	}
+
+	@Override
+	public int compareTo(Vertice<T> o) {
+		return this.PageRank - o.getPageRank();
 	}
 	
 	

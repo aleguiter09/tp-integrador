@@ -11,6 +11,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
+import java.util.Arrays;
 
 public class RegistrarRuta extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -20,11 +25,44 @@ public class RegistrarRuta extends JPanel {
 	private JTextField peso;
 	private JTextField inicio;
 	private JTextField fin;
+	private JTable table;
+	private Object[][] valores;
+	private String[] columnas;
+	private DefaultTableModel modelo;
 
 	public RegistrarRuta(Principal principal) {
 		setBounds(350, 0, ancho, alto);
 		setBackground(new Color(139, 69, 19));
 		setLayout(null);
+		
+		
+		
+		
+		valores = new Object[principal.grafo.vertices().size()][3];
+		columnas = new String[] { "ID", "Nombre", "Page Rank" };
+		
+		for(int i=0; i<principal.grafo.vertices().size(); i++) {
+			principal.grafo.vertices().get(i).setPageRank(principal.grafo.gradoEntrada(principal.grafo.vertices().get(i)));
+		}
+		
+		for(int i=0; i<principal.grafo.vertices().size(); i++) {
+			valores[i][0] = principal.grafo.vertices().get(i).getValor().getId();
+			valores[i][1] =  principal.grafo.vertices().get(i).getValor().getNombre();
+			valores[i][2] = principal.grafo.vertices().get(i).getPageRank();
+		}
+		
+		modelo = new DefaultTableModel(valores, columnas) {
+			private static final long serialVersionUID = 1L;
+			public boolean[] columnEditables = new boolean[] {
+					false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			};
+		};
+		
+		modelo.setDataVector(valores,columnas);
+		
 		
 		JLabel lblRegistrarRuta = new JLabel("REGISTRAR RUTA");
 		lblRegistrarRuta.setLocation(225, 25);
@@ -184,6 +222,35 @@ public class RegistrarRuta extends JPanel {
 		});
 		aceptar.setBounds(417, 519, 70, 22);
 		add(aceptar);
+		
+		Button refrescar = new Button("Refrescar");
+		refrescar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				for(int i=0; i<principal.grafo.vertices().size(); i++) {
+					principal.grafo.vertices().get(i).setPageRank(principal.grafo.gradoEntrada(principal.grafo.vertices().get(i)));
+				}
+				valores = new Object[principal.grafo.vertices().size()][8]; 
+				for(int i=0; i<principal.grafo.vertices().size(); i++) {
+					valores[i][0] = principal.grafo.vertices().get(i).getValor().getId();
+					valores[i][1] =  principal.grafo.vertices().get(i).getValor().getNombre();
+					valores[i][2] = principal.grafo.vertices().get(i).getPageRank();
+				}
+				modelo.setDataVector(valores, columnas);
+			}
+		});
+		refrescar.setBounds(808, 407, 70, 22);
+		add(refrescar);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(511, 100, 367, 285);
+		add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		table.setModel(modelo);
+		
+		TableRowSorter<TableModel> elQueOrdena = new TableRowSorter<TableModel>(modelo);
+		table.setRowSorter(elQueOrdena);
 
 	}
 }

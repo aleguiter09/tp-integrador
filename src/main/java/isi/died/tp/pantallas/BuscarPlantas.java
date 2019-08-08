@@ -113,12 +113,12 @@ public class BuscarPlantas extends JPanel {
 		
 		//TABLA
 		valores = new Object[1][1];
-		columnas = new String[] {"ID", "Nombre", "Cantidad de Insumos", "Punto de Reposición"};
+		columnas = new String[] {"ID", "Nombre", "Cantidad de Insumos", "Punto de Reposición", "Cantidad faltante"};
 		
 		modelo = new DefaultTableModel(valores, columnas) {
 			private static final long serialVersionUID = 1L;
 			public boolean[] columnEditables = new boolean[] {
-					false, false, false, false
+					false, false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -154,12 +154,15 @@ public class BuscarPlantas extends JPanel {
 						encontrado = true;
 					}
 					if(plantaEncontrada != null) {
-						valores = new Object[plantaEncontrada.getStock().size()][4]; 
+						valores = new Object[plantaEncontrada.getStock().size()][5]; 
 						for(int j=0; j<plantaEncontrada.getStock().size(); j++) {
 							valores[j][0] = plantaEncontrada.getStock().get(j).getId();
 							valores[j][1] = plantaEncontrada.getStock().get(j).getInsumo().getNombre();
 							valores[j][2] = plantaEncontrada.getStock().get(j).getCantidad();
 							valores[j][3] = plantaEncontrada.getStock().get(j).getPuntoPedido();
+							if(plantaEncontrada.getStock().get(j).getCantidad() < plantaEncontrada.getStock().get(j).getPuntoPedido())
+							valores[j][4] = plantaEncontrada.getStock().get(j).getPuntoPedido() - plantaEncontrada.getStock().get(j).getCantidad();
+							else valores[j][4] = 0;	
 						}
 					}
 				}

@@ -22,7 +22,7 @@ public class RegistroCamion extends JPanel {
 	private JTextField patente;
 	private JTextField año;
 	
-	private int idGeneral = 0;
+	private int idGeneral = 16;
 	
 	public RegistroCamion(Principal principal) {
 		setBounds(350, 0, ancho, alto);
@@ -158,7 +158,7 @@ public class RegistroCamion extends JPanel {
 					boolean ref = aptoLiq.getState();
 					Camion c = new Camion(idGeneral,cap,anio,ref,mar,mod,pat,cost);
 					principal.camiones.add(c);
-					JOptionPane.showMessageDialog(null, "¡Insumo registrado con éxito!\nID Camión: "+idGeneral);
+					JOptionPane.showMessageDialog(null, "¡Camión registrado con éxito!\nID Camión: "+idGeneral);
 					idGeneral++;
 					marca.setText(null);
 					modelo.setText(null);

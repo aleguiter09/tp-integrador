@@ -13,12 +13,15 @@ import isi.died.tp.dominio.*;
 import isi.died.tp.estructuras.*;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
+import javax.swing.table.DefaultTableModel;
 
 public class VerRutas extends JPanel implements MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = 1L;
-	private static final int  ancho=950, alto=571;
+	private static final int  ancho=1000, alto=571;
 	
 	private ArrayList<VerticeGrafo> vertices;
 	private ArrayList<Ruta> rutas;
@@ -29,6 +32,15 @@ public class VerRutas extends JPanel implements MouseListener, MouseMotionListen
 	private ArrayList<Vertice<Planta>> flujo;
 	private JTextField camionPeso;
 	private float pesoFlujoMax;
+	private JTextField IdOrigen;
+	private JTextField IdDestino;
+	private JTable table;
+
+	private Object[][] valores;
+	private String[] columnas;
+	private DefaultTableModel modelo;
+	
+	private List<List<Vertice<Planta>>> caminosEntre;
 
 	public VerRutas(Principal principal) {
 		setBackground(new Color(139, 69, 19));
@@ -36,6 +48,22 @@ public class VerRutas extends JPanel implements MouseListener, MouseMotionListen
 		addMouseMotionListener(this);
 		setBounds(350, 0, ancho, alto);
 		setLayout(null);
+		
+		caminosEntre = new ArrayList<List<Vertice<Planta>>>();
+	
+		valores = new Object[caminosEntre.size()][4];
+		columnas = new String[] {"Camino", "Dist. Total", "Dur. Total", "Peso Total"};
+		
+		modelo = new DefaultTableModel(valores, columnas) {
+			private static final long serialVersionUID = 1L;
+			public boolean[] columnEditables = new boolean[] {
+					false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			};
+		};
+
 		
 		vertices = new ArrayList<VerticeGrafo>();
 		rutas = new ArrayList<Ruta>();
@@ -56,23 +84,24 @@ public class VerRutas extends JPanel implements MouseListener, MouseMotionListen
 		JLabel lblInsumos = new JLabel("Insumos");
 		lblInsumos.setForeground(Color.WHITE);
 		lblInsumos.setFont(new Font("Dialog", Font.BOLD, 25));
-		lblInsumos.setBounds(713, 29, 120, 27);
+		lblInsumos.setBounds(763, 29, 120, 27);
 		add(lblInsumos);
 		
 		Checkbox checkbox = new Checkbox("Calcular Flujo Maximo");
 		checkbox.setForeground(Color.WHITE);
 		checkbox.setFont(new Font("Dialog", Font.BOLD, 12));
-		checkbox.setBounds(675, 150, 184, 22);
+		checkbox.setBounds(725, 130, 184, 22);
 		add(checkbox);
 		
 		camionPeso = new JTextField();
-		camionPeso.setBounds(675, 194, 147, 22);
+		camionPeso.setEditable(false);
+		camionPeso.setBounds(725, 160, 147, 22);
 		add(camionPeso);
 		camionPeso.setColumns(10);
 		
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setModel(new DefaultComboBoxModel<String>(nombresInsumos));
-		comboBox.setBounds(675, 69, 184, 30);
+		comboBox.setBounds(725, 69, 184, 30);
 		add(comboBox);
 		
 		
@@ -111,7 +140,7 @@ public class VerRutas extends JPanel implements MouseListener, MouseMotionListen
 				//Obtengo elegido
 				elegido = insumos.get(comboBox.getSelectedIndex());
 				//PintoVertices
-				for(VerticeGrafo v: vertices)  if(v.getVertice().getValor().necesitaInsumo(elegido)) v.setNecesitaInsumo(true);	
+				
 				//Caminos de acopioInicial a acopioFinal	
 				Planta acopioInicial = null;
 				Planta acopioFinal = null;
@@ -121,37 +150,48 @@ public class VerRutas extends JPanel implements MouseListener, MouseMotionListen
 				}
 					
 				List<List<Vertice<Planta>>> caminos = principal.grafo.caminos(acopioInicial, acopioFinal);
+				//Obtengo los caminos que cubren todas las plantas
+				List<List<Vertice<Planta>>> caminosFlujo = new ArrayList<List<Vertice<Planta>>>();
+				for(List<Vertice<Planta>> lista: caminos) {
+					if(lista.containsAll(principal.grafo.vertices())) caminosFlujo.add(lista);
+				}
+				
 				//Obtengo los caminos que cubren los que necesitan insumo
 				ArrayList<Vertice<Planta>> aux = new ArrayList<Vertice<Planta>>();
 				for(int i=0; i<principal.grafo.vertices().size(); i++) {
 					if(principal.grafo.vertices().get(i).getValor().necesitaInsumo(elegido))
 						aux.add(principal.grafo.vertices().get(i));
 				}
-				List<List<Vertice<Planta>>> aux1 = new ArrayList<List<Vertice<Planta>>>();
+				List<List<Vertice<Planta>>> caminosInsumos = new ArrayList<List<Vertice<Planta>>>();
 				for(List<Vertice<Planta>> lista: caminos) {
-					if(lista.containsAll(aux)) aux1.add(lista);
+					if(lista.containsAll(aux)) caminosInsumos.add(lista);
 				}
-				//Obtengo resultado y flujo
-
-				
 					
-				if(checkbox.getState()) {
-					flujo = flujoMaximo(caminos);
+				if(checkbox.getState() && comboBox.getSelectedIndex()==0) {
+					resultado.clear();
+					flujo = flujoMaximo(caminosFlujo);
 					for(int i=0; i<rutas.size(); i++) rutas.get(i).setEsResultado(false);
+					for(int i=0; i<vertices.size(); i++) vertices.get(i).setNecesitaInsumo(false);
 					for(int i=0; i<rutas.size(); i++) {
-						if(flujo.contains(rutas.get(i).getArista().getInicio()) && flujo.contains(rutas.get(i).getArista().getFin()))
+						if(flujo.contains(rutas.get(i).getArista().getInicio()) && flujo.contains(rutas.get(i).getArista().getFin())) {
+							flujo.remove(rutas.get(i).getArista().getInicio());
 							rutas.get(i).setEsFlujo(true);
+						}
 						else rutas.get(i).setEsFlujo(false);
 					}
 					camionPeso.setText(pesoFlujoMax+" KG");
 				}
 				else if(comboBox!=null && comboBox.getSelectedIndex()!=0 && !checkbox.getState()) {
-					resultado = mejorRuta(aux1);
+					for(VerticeGrafo v: vertices)  if(v.getVertice().getValor().necesitaInsumo(elegido)) v.setNecesitaInsumo(true);	
+					flujo.clear();
+					resultado = mejorRuta(caminosInsumos);
 					camionPeso.setText(null);
 					for(int i=0; i<rutas.size(); i++) rutas.get(i).setEsFlujo(false);
 					for(int i=0; i<rutas.size(); i++) {
-						if(resultado.contains(rutas.get(i).getArista().getInicio()) && resultado.contains(rutas.get(i).getArista().getFin()))
+						if(resultado.contains(rutas.get(i).getArista().getInicio()) && resultado.contains(rutas.get(i).getArista().getFin())) {
+							resultado.remove(rutas.get(i).getArista().getInicio());
 							rutas.get(i).setEsResultado(true);
+						}
 						else rutas.get(i).setEsResultado(false);
 					}
 				}
@@ -161,9 +201,116 @@ public class VerRutas extends JPanel implements MouseListener, MouseMotionListen
 	}
 });
 
-		refrescar.setBounds(535, 512, 70, 22);
+		refrescar.setBounds(898, 526, 70, 22);
 		add(refrescar);
 		
+		Button calcularCaminos = new Button("Obtener caminos");
+		calcularCaminos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(IdOrigen.getText().isEmpty()||IdDestino.getText().isEmpty()) 
+					JOptionPane.showMessageDialog(null, "Debe completar todos los campos","¡ERROR!", JOptionPane.WARNING_MESSAGE);
+				else {
+					int idO = Integer.valueOf(IdOrigen.getText().trim()).intValue();
+					int idD = Integer.valueOf(IdDestino.getText().trim()).intValue();
+					Planta origen = null;
+					Planta destino = null;
+					for(Vertice<Planta> p: principal.grafo.vertices()) {
+						if(p.getValor().getId() == idO) origen = p.getValor();
+						if(p.getValor().getId() == idD) destino = p.getValor();
+					}
+					if(origen == null) JOptionPane.showMessageDialog(null, "No se encontró planta ORIGEN \nPor favor, ingrese un ID Planta válido","¡ERROR!", JOptionPane.WARNING_MESSAGE);
+					else if(destino == null) JOptionPane.showMessageDialog(null, "No se encontró planta DESTINO \nPor favor, ingrese un ID Planta válido","¡ERROR!", JOptionPane.WARNING_MESSAGE);
+					else caminosEntre = principal.grafo.caminos(principal.grafo.getNodo(origen),principal.grafo.getNodo(destino));
+				}
+				
+				String nom="[";
+				float dist = 0;
+				float durac = 0;
+				float peso = 0;
+				
+				valores = new Object[caminosEntre.size()][4];
+				ArrayList<Arista<Planta>> aristas = new ArrayList<>();
+				
+				for(int i=0; i<caminosEntre.size(); i++) {
+					for(int j=0; j<caminosEntre.get(i).size(); j++) {
+						if(j==caminosEntre.get(i).size()-1) nom += caminosEntre.get(i).get(j).getValor().getId()+"]";
+						else nom += caminosEntre.get(i).get(j).getValor().getId()+"] [";
+					}
+
+					aristas.clear();
+					dist=0;
+					durac=0;
+					peso=0;
+					for(int w=0;w<caminosEntre.get(i).size()-1;w++) {
+						aristas.add(prin.grafo.buscarArista(caminosEntre.get(i).get(w), caminosEntre.get(i).get(w+1)));
+					}
+						for(Arista<Planta> a: aristas) {
+							dist+=a.getDistancia();
+							durac+=a.getDuracion();
+							peso+=a.getPesoCamion();
+						}
+					valores[i][0] = nom; 
+					valores[i][1] = dist;
+					valores[i][2] = durac;
+					valores[i][3] = peso;
+					nom="[";
+				}
+				modelo.setDataVector(valores,columnas);
+			}
+		});
+		calcularCaminos.setFont(new Font("Dialog", Font.BOLD, 12));
+		calcularCaminos.setBounds(800, 298, 108, 22);
+		add(calcularCaminos);
+		
+		IdOrigen = new JTextField();
+		IdOrigen.setBounds(822, 215, 50, 20);
+		add(IdOrigen);
+		IdOrigen.setColumns(10);
+		IdOrigen.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char validar=e.getKeyChar();
+				if(Character.isLetter(validar)) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
+		
+		IdDestino = new JTextField();
+		IdDestino.setBounds(822, 260, 50, 20);
+		add(IdDestino);
+		IdDestino.setColumns(10);
+		IdDestino.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char validar=e.getKeyChar();
+				if(Character.isLetter(validar)) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
+		
+		JLabel lblIdPlantaOrigen = new JLabel("ID Planta origen");
+		lblIdPlantaOrigen.setForeground(Color.WHITE);
+		lblIdPlantaOrigen.setFont(new Font("Dialog", Font.BOLD, 12));
+		lblIdPlantaOrigen.setBounds(710, 215, 113, 14);
+		add(lblIdPlantaOrigen);
+		
+		JLabel lblIdPlantaDestino = new JLabel("ID Planta destino");
+		lblIdPlantaDestino.setForeground(Color.WHITE);
+		lblIdPlantaDestino.setFont(new Font("Dialog", Font.BOLD, 12));
+		lblIdPlantaDestino.setBounds(710, 260, 113, 14);
+		add(lblIdPlantaDestino);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(667, 338, 302, 170);
+		add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		table.setModel(modelo);
 		
 		repaint();	
 	}
@@ -228,14 +375,15 @@ public class VerRutas extends JPanel implements MouseListener, MouseMotionListen
 			for(int j=0;j<aux1.get(i).size() - 1;j++) 
 			aristas.add(prin.grafo.buscarArista(aux1.get(i).get(j), aux1.get(i).get(j+1)));
 			for(Arista<Planta> a: aristas) {
-				peso+=a.getPesoCamion();
+				if(a.getPesoCamion() != 0.0)
+				peso=a.getPesoCamion();
 			}
 			if(peso < menor){
 				menor = peso;
-				pesoFlujoMax = peso;
 				resultado = (ArrayList<Vertice<Planta>>) aux1.get(i);
 			}
 		}
+		pesoFlujoMax = menor;
 		return resultado;
 	}
 	

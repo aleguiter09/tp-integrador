@@ -9,27 +9,12 @@ public class Ruta {
 	private boolean esResultado = false;
 	private boolean esFlujo = false;
 	
-	public boolean isEsFlujo() {
-		return esFlujo;
-	}
-
-	public void setEsFlujo(boolean esFlujo) {
-		this.esFlujo = esFlujo;
-		this.esResultado = !esFlujo;
-	}
-
-	public boolean isEsResultado() {
-		return esResultado;
-	}
-
-	public void setEsResultado(boolean esResultado) {
-		this.esResultado = esResultado;
-		this.esFlujo = !esResultado;
-	}
 
 	public Ruta(VerticeGrafo inicio, VerticeGrafo fin) {
 		this.inicio = inicio;
 		this.fin = fin;
+		this.esResultado = false;
+		this.esFlujo = false;
 	}
 	
 	public void setArista(Arista<Planta> p) {
@@ -51,6 +36,22 @@ public class Ruta {
 	}
 	public void setFin(VerticeGrafo fin) {
 		this.fin = fin;
+	}
+	
+	public boolean isEsFlujo() {
+		return esFlujo;
+	}
+
+	public void setEsFlujo(boolean f) {
+		this.esFlujo = f;
+	}
+
+	public boolean isEsResultado() {
+		return esResultado;
+	}
+
+	public void setEsResultado(boolean r) {
+		this.esResultado = r;
 	}
 	
 	

@@ -2,6 +2,8 @@ package isi.died.tp.pantallas;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -18,7 +20,7 @@ import isi.died.tp.estructuras.ArbolBinarioBusqueda;
 public class BuscarInsumos extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
-	private static final int ancho = 900, alto = 571;
+	private static final int ancho = 1000, alto = 571;
 	
 	private JTextField costoMin;
 	private JTextField costoMax;
@@ -169,7 +171,8 @@ public class BuscarInsumos extends JPanel {
 					Insumo aux1 = new Insumo();
 					aux1.setId(idAux);
 					Insumo i = principal.arbol.obtener(aux1);
-					array.add(i);
+					if(i != null) array.add(i);
+					else JOptionPane.showMessageDialog(null, "ID inexistente ","¡ERROR!", JOptionPane.WARNING_MESSAGE);
 				}
 				else {
 					if(stockMin.getText().isEmpty() && stockMax.getText().isEmpty()) {
@@ -645,6 +648,9 @@ public class BuscarInsumos extends JPanel {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		table.setModel(modelo);
+		
+		TableRowSorter<TableModel> elQueOrdena = new TableRowSorter<TableModel>(modelo);
+		table.setRowSorter(elQueOrdena);
 	}
 }
 

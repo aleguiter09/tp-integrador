@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class Principal {
-	private int ancho = 1250, alto = 610; 
+	private int ancho = 1350, alto = 610; 
 	private JFrame frame;
 	private RegistroInsumo registroI;
 	private RegistroPlanta registroP;
